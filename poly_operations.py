@@ -19,6 +19,10 @@ def value(poly, point):
     return list(accumulate(poly, lambda x, y: point * x + y, initial=0))[-1]
 
 
+def is_root(poly, point):
+    return abs(value(poly, point)) < epsilon
+
+
 @standard_notation
 def add(poly1, poly2):
     n = max(len(poly1), len(poly2))

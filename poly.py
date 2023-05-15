@@ -8,6 +8,9 @@ class Poly:
     def get_leading_coefficient(self):
         return self.coefficients[0]
 
+    def is_root(self, point):
+        return is_root(self.coefficients, point)
+
     def poly_val(self, point):
         return value(self.coefficients, point)
 

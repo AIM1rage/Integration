@@ -8,4 +8,6 @@ if __name__ == '__main__':
     result3 = b / a
     result4 = (a + b).poly_val(1)
     result5 = 2 * a
+    result6 = b.is_root(-1)
+    result7 = b.is_root(1)
     pass
