@@ -15,8 +15,8 @@ def standard_notation(func):
     return wrapper
 
 
-def poly_val(poly, value):
-    return list(accumulate(poly, lambda x, y: value * x + y, initial=0))[-1]
+def value(poly, point):
+    return list(accumulate(poly, lambda x, y: point * x + y, initial=0))[-1]
 
 
 @standard_notation

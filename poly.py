@@ -5,6 +5,13 @@ class Poly:
     def __init__(self, iterable):
         self.coefficients = list(iterable)
 
+    def poly_val(self, point):
+        return value(self.coefficients, point)
+
+    def __iter__(self):
+        for coefficient in self.coefficients:
+            yield coefficient
+
     def __add__(self, other: 'Poly') -> 'Poly':
         return Poly(add(self.coefficients, other.coefficients))
 
