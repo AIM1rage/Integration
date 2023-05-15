@@ -7,4 +7,5 @@ if __name__ == '__main__':
     result2 = a * b
     result3 = b / a
     result4 = (a + b).poly_val(1)
+    result5 = b - (a + a)
     pass

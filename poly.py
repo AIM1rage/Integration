@@ -15,6 +15,9 @@ class Poly:
     def __add__(self, other: 'Poly') -> 'Poly':
         return Poly(add(self.coefficients, other.coefficients))
 
+    def __sub__(self, other: 'Poly') -> 'Poly':
+        return self.__add__(other.__neg__())
+
     def __mul__(self, other: 'Poly') -> 'Poly':
         return Poly(multiply(self.coefficients, other.coefficients))
 
