@@ -19,6 +19,18 @@ def poly_val(poly, value):
     return list(accumulate(poly, lambda x, y: value * x + y, initial=0))[-1]
 
 
+@standard_notation
+def add(poly1, poly2):
+    n = max(len(poly1), len(poly2))
+    out = [0] * n
+    for i in range(n - 1, -1, -1):
+        a = 0 if i >= len(poly1) else poly1[i]
+        b = 0 if i >= len(poly2) else poly2[i]
+        out[i] = a + b
+    out.reverse()
+    return out
+
+
 # умножение 2 многочленов a_n * x ^ n + a_(n - 1) * x ^ (n - 1) + ... + a_0
 # b_m * x ^ m + b_(m - 1) * x ^ (m - 1) + ... + b_0
 @standard_notation
@@ -32,10 +44,11 @@ def multiply(poly1, poly2):
 
 
 # деление: частное и остаток в виде пары строк (q(x), r(x))
-@standard_notation
-def divide(dividend, divisor):
+def divide_mod(dividend, divisor):
     out = list(dividend)
     norm = divisor[0]
+    if all([abs(x) < epsilon for x in divisor]):
+        raise ZeroDivisionError
     for i in range(len(dividend) - len(divisor) + 1):
         out[i] /= norm
         coefficient = out[i]
@@ -44,6 +57,16 @@ def divide(dividend, divisor):
                 out[i + j] += -divisor[j] * coefficient
     separator = 1 - len(divisor)
     return out[:separator], out[separator:]
+
+
+@standard_notation
+def divide(dividend, divisor):
+    return divide_mod(dividend, divisor)[0]
+
+
+@standard_notation
+def mod(dividend, divisor):
+    return divide_mod(dividend, divisor)[1]
 
 
 # производная a`(x) многочлена a(x)
