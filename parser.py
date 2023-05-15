@@ -7,5 +7,5 @@ def parse(line: str):
 
 
 if __name__ == '__main__':
-    f = '(2 * x) / (x^2 + 1)^2'
+    f = '(1) / (x + 1)'
     print(sympy.integrate(f))

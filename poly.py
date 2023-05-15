@@ -42,5 +42,10 @@ class Poly:
     def __invert__(self):
         return Poly(derivative(self.coefficients))
 
+    def __getitem__(self, index: int):
+        if index < -len(self.coefficients) or index >= len(self.coefficients):
+            raise IndexError
+        return self.coefficients[index]
+
     def __str__(self):
         return self.coefficients.__str__()

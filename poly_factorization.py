@@ -1,20 +1,23 @@
 from poly import Poly
+
+
 # раскладывает на неприводимые множители многочлен и
 # возвращает лист кортежей вида ([1, x_0], k) и ([1, p, q], k)
 
 def find_dividers(n):
     dividers = []
-    for i in range(1, int(n**0.5) + 1):
-        if(n % i == 0):
+    for i in range(1, int(n ** 0.5) + 1):
+        if n % i == 0:
             dividers.append(i)
-            if(n // i) != i:
-                dividers.append(n//i)
+            if (n // i) != i:
+                dividers.append(n // i)
     return sorted(dividers)
 
+
 def search_rational_roots(poly: Poly):
-    dict = {}
-    old_k = poly.coefficients[0]
-    free_k = poly.coefficients[-1]
+    roots = {}
+    old_k = poly[0]
+    free_k = poly[-1]
     candidates = []
     old_k_dividers = find_dividers(old_k)
     free_k_dividers = find_dividers(free_k)
@@ -27,12 +30,13 @@ def search_rational_roots(poly: Poly):
     for i in candidates:
         deg = 0
         poly_copy = Poly(poly)
-        while(poly_copy.is_root(i)):
-            deg+=1
+        while poly_copy.is_root(i):
+            deg += 1
             poly_copy = ~poly_copy
-        dict[i] = deg
+        roots[i] = deg
 
-    return dict
-            
-p = Poly([1,-6.28*100,3.14*3.14*10000])
+    return roots
+
+
+p = Poly([1, -6.28 * 100, 3.14 * 3.14 * 10000])
 print(search_rational_roots(p))
