@@ -5,6 +5,9 @@ class Poly:
     def __init__(self, iterable):
         self.coefficients = list(iterable)
 
+    def get_leading_coefficient(self):
+        return self.coefficients[0]
+
     def poly_val(self, point):
         return value(self.coefficients, point)
 
@@ -20,6 +23,9 @@ class Poly:
 
     def __mul__(self, other: 'Poly') -> 'Poly':
         return Poly(multiply(self.coefficients, other.coefficients))
+
+    def __rmul__(self, other):
+        return Poly(multiply(self.coefficients, [other]))
 
     def __truediv__(self, other: 'Poly') -> 'Poly':
         return Poly(divide(self.coefficients, other.coefficients))
