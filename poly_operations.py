@@ -1,6 +1,5 @@
 from itertools import dropwhile, accumulate
-
-epsilon = 1e-6
+from constants import epsilon
 
 
 # приведение многочлена к стандартному виду (удаление нулей)
@@ -76,7 +75,7 @@ def mod(dividend, divisor):
 # производная a`(x) многочлена a(x)
 @standard_notation
 def derivative(poly):
-    if len(poly) == 0:
+    if not poly:
         return [0]
     out = list()
     n = len(poly) - 1

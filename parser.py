@@ -1,11 +1,7 @@
-import sympy
+from poly import Poly
 
 
-def parse(line: str):
-    s = line.split()
-    return
+def parse(expression: str) -> Poly:
+    pass
 
 
-if __name__ == '__main__':
-    f = '(1) / (x + 1)'
-    print(sympy.integrate(f))

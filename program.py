@@ -3,7 +3,6 @@ from poly import Poly
 if __name__ == '__main__':
     a = Poly([1, 2, 1])
     b = Poly([1, 3, 3, 1])
-    b.coefficients[4]
     result1 = a + b
     result2 = a * b
     result3 = b / a
