@@ -26,9 +26,9 @@ def is_root(poly, point):
 def add(poly1, poly2):
     n = max(len(poly1), len(poly2))
     out = [0] * n
-    for i in range(n - 1, -1, -1):
-        a = 0 if i >= len(poly1) else poly1[i]
-        b = 0 if i >= len(poly2) else poly2[i]
+    for i in range(n):
+        a = 0 if len(poly1) - 1 - i < 0 else poly1[len(poly1) - 1 - i]
+        b = 0 if len(poly2) - 1 - i < 0 else poly2[len(poly2) - 1 - i]
         out[i] = a + b
     out.reverse()
     return out
@@ -41,7 +41,7 @@ def multiply(poly1, poly2):
     out = [0] * (len(poly1) + len(poly2) - 1)
     for i in range(len(poly1) - 1, -1, -1):
         for j in range(len(poly2) - 1, -1, -1):
-            out[i + j] += poly1[i] * poly2[j]
+            out[len(poly1) + len(poly2) - 2 - i - j] += poly1[i] * poly2[j]
     out.reverse()
     return out
 

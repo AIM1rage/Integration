@@ -18,6 +18,9 @@ class Poly:
         for coefficient in self.coefficients:
             yield coefficient
 
+    def __len__(self):
+        return len(self.coefficients)
+
     def __add__(self, other: 'Poly') -> 'Poly':
         return Poly(add(self.coefficients, other.coefficients))
 
@@ -48,4 +51,4 @@ class Poly:
         return self.coefficients[index]
 
     def __str__(self):
-        return self.coefficients.__str__()
+        return str(self.coefficients)
