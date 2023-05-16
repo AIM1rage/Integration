@@ -39,6 +39,26 @@ class Poly:
     def __mod__(self, other: 'Poly') -> 'Poly':
         return Poly(mod(self.coefficients, other.coefficients))
 
+    def __pow__(self, other):
+        if isinstance(other, int):
+            deg = other
+        elif isinstance(other, Poly):
+            for i in range(len(other) - 1):
+                if abs(other[i]) > epsilon:
+                    raise ValueError
+            deg = other[-1]
+        else:
+            raise ValueError
+        if deg < 0:
+            raise ValueError
+        elif deg == 0:
+            return Poly([1])
+        else:
+            result = [1]
+            for i in range(deg):
+                result = multiply(result, self.coefficients)
+            return Poly(result)
+
     def __neg__(self):
         return Poly(multiply(self.coefficients, [-1]))
 

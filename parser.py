@@ -4,7 +4,7 @@ from constants import *
 import re
 
 
-def parse(expression: str) -> int:
+def parse(expression: str) -> Poly:
     expression_without_spaces = str(re.sub('\\s', '', expression))
     return calculate_postfix(to_postfix(expression_without_spaces))
 
@@ -19,6 +19,7 @@ def calculate_postfix(postfix):
         elif token in operators:
             operand2 = stack.pop()
             operand1 = stack.pop()
+            check_operation_correctness(operators[token], operand1, operand2)
             stack.append(operators[token](operand1, operand2))
     return stack.pop()
 
@@ -60,7 +61,9 @@ def to_postfix(expression):
                     brackets[stack.pop()] != close_bracket_result[0]:
                 raise ArithmeticError
             index = close_bracket_result[1]
-    postfix.extend(stack)
+        else:
+            raise ArithmeticError
+    postfix.extend(reversed(stack))
     return postfix
 
 
@@ -83,6 +86,11 @@ def read_symbol(expression, index, predicate):
         index += 1
         return expression[index - 1], index
     return None
+
+
+def check_operation_correctness(operator_to_check, operand1, operand2):
+    # TODO
+    return True
 
 
 if __name__ == '__main__':
