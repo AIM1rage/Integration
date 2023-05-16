@@ -1,4 +1,4 @@
-from poly import Poly
+from poly import *
 
 if __name__ == '__main__':
     a = Poly([1, 2, 1])
@@ -7,7 +7,7 @@ if __name__ == '__main__':
     result2 = a * b
     result3 = b / a
     result4 = (a + b).poly_val(1)
-    result5 = 2 * a
+    result5 = 5 * a
     result6 = b.is_root(-1)
     result7 = b.is_root(1)
     result8 = ~(a * b)
