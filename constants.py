@@ -6,7 +6,7 @@ operators = dict([('+', operator.add),
                   ('-', operator.sub),
                   ('^', operator.pow)])
 operator_priorities = dict([('+', 1), ('-', 1), ('*', 2), ('^', 3)])
-brackets = dict([('(', ')')])
+brackets = dict([('(', ')'), ('[', ']')])
 read_predicates = dict([('x', lambda x: x == 'x'),
                         ('operator', lambda x: x in operators.keys()),
                         ('open bracket', lambda x: x in brackets.keys()),
