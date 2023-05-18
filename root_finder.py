@@ -51,8 +51,14 @@ class RootFinder:
         derivative = ~poly
         area = max([abs(x) for x in poly])
         x_0 = point_selector(area)
-        for i in range(5):
-            for j in range(1000):
+        iterations_count = 1000
+        tries_count = 5
+        for i in range(tries_count):
+            for j in range(iterations_count):
+                k = 0
+                while poly.is_root(x_0) and k < iterations_count:
+                    x_0 = x_0 - poly.poly_val(x_0) / derivative.poly_val(x_0)
+                    k += 1
                 if poly.is_root(x_0):
                     return x_0
                 x_0 = x_0 - poly.poly_val(x_0) / derivative.poly_val(x_0)
@@ -71,10 +77,11 @@ class RootFinder:
 
 
 if __name__ == '__main__':
-    expression = 'x ^ 3 - 2 * x ^ 2 + 2'
+    expression = '(x ^ 3 - 2 * x ^ 2 + 2)'
+    right_root = '-0.83928675521416113255185256465328660'
     parsed_poly = Parser.parse(expression)
     real_root = RootFinder.find_real_root(parsed_poly)
-    divided_poly = parsed_poly / Poly([1, -real_root])
-    print(divided_poly)
-    complex_root = RootFinder.find_complex_root(divided_poly)
+    complex_root = RootFinder.find_complex_root(parsed_poly)
+    print(right_root)
+    print(real_root)
     print(Poly([1, -complex_root]) * Poly([1, -complex_root.conjugate()]))
