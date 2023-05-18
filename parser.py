@@ -101,4 +101,8 @@ class Parser:
 
 if __name__ == '__main__':
     result = list(map(Parser.parse, example.to_parse))
+    for expression in result:
+        for i in range(len(expression)):
+            print(f'{expression[i]}*x^{len(expression) - 1 - i}', end=' + ')
+        print()
     pass
