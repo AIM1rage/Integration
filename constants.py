@@ -1,6 +1,6 @@
 import operator
 
-epsilon = 1e-6
+epsilon = 1e-15
 operators = dict([('+', operator.add),
                   ('*', operator.mul),
                   ('-', operator.sub),

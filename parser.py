@@ -8,11 +8,11 @@ class Parser:
     @staticmethod
     def parse(expression: str) -> Poly:
         expression_without_spaces = str(re.sub('\\s', '', expression))
-        return Parser.calculate_postfix(
-            Parser.to_postfix(expression_without_spaces))
+        return Parser._calculate_postfix_(
+            Parser._to_postfix_(expression_without_spaces))
 
     @staticmethod
-    def calculate_postfix(postfix):
+    def _calculate_postfix_(postfix):
         stack = list()
         for token in postfix:
             if type(token) is int:
@@ -22,26 +22,27 @@ class Parser:
             elif token in operators:
                 operand2 = stack.pop()
                 operand1 = stack.pop()
-                Parser.check_operation_correctness(operators[token], operand1,
-                                                   operand2)
+                Parser._check_operation_correctness_(operators[token],
+                                                     operand1,
+                                                     operand2)
                 stack.append(operators[token](operand1, operand2))
         return stack.pop()
 
     @staticmethod
-    def to_postfix(expression):
+    def _to_postfix_(expression):
         postfix = list()
         stack = list()
         index = 0
         while index < len(expression):
-            number_result = Parser.read_number(
+            number_result = Parser._read_number_(
                 expression, index)
-            x_result = Parser.read_symbol(
+            x_result = Parser._read_symbol_(
                 expression, index, read_predicates['x'])
-            operator_result = Parser.read_symbol(
+            operator_result = Parser._read_symbol_(
                 expression, index, read_predicates['operator'])
-            open_bracket_result = Parser.read_symbol(
+            open_bracket_result = Parser._read_symbol_(
                 expression, index, read_predicates['open bracket'])
-            close_bracket_result = Parser.read_symbol(
+            close_bracket_result = Parser._read_symbol_(
                 expression, index, read_predicates['close bracket'])
             if number_result:
                 postfix.append(number_result[0])
@@ -75,7 +76,7 @@ class Parser:
     # пытается прочитать число и возвращает (number, index),
     # если не получилось - возвращает None
     @staticmethod
-    def read_number(expression, index):
+    def _read_number_(expression, index):
         digits = list()
         while index < len(expression) and str(expression[index]).isdigit():
             digits.append(expression[index])
@@ -87,22 +88,21 @@ class Parser:
     # пытается прочитать символ и возвращает (symbol, index),
     # если не получилось - возвращает None
     @staticmethod
-    def read_symbol(expression, index, predicate):
+    def _read_symbol_(expression, index, predicate):
         if index < len(expression) and predicate(expression[index]):
             index += 1
             return expression[index - 1], index
         return None
 
     @staticmethod
-    def check_operation_correctness(operator_to_check, operand1, operand2):
+    def _check_operation_correctness_(operator_to_check, operand1, operand2):
         # TODO
         return True
 
 
 if __name__ == '__main__':
     result = list(map(Parser.parse, example.to_parse))
-    for expression in result:
-        for i in range(len(expression)):
-            print(f'{expression[i]}*x^{len(expression) - 1 - i}', end=' + ')
+    for poly in result:
+        for i in range(len(poly)):
+            print(f'{poly[i]}*x^{len(poly) - 1 - i}', end=' + ')
         print()
-    pass
