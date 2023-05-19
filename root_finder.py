@@ -81,7 +81,11 @@ if __name__ == '__main__':
     right_root = '-0.83928675521416113255185256465328660'
     parsed_poly = Parser.parse(expression)
     real_root = RootFinder.find_real_root(parsed_poly)
-    complex_root = RootFinder.find_complex_root(parsed_poly)
+    complex_root = RootFinder.find_complex_root(
+        parsed_poly / Poly([1, -real_root]))
+    poly_divider = Poly([1, -complex_root]) * Poly(
+        [1, -complex_root.conjugate()])
     print(right_root)
     print(real_root)
-    print(Poly([1, -complex_root]) * Poly([1, -complex_root.conjugate()]))
+    print(poly_divider)
+    print(parsed_poly / poly_divider)
