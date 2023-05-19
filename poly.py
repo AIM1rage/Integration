@@ -14,6 +14,9 @@ class Poly:
     def poly_val(self, point):
         return value(self.coefficients, point)
 
+    def has_root(self):
+        return len(self) > 1 or abs(self[-1]) < epsilon
+
     def __iter__(self):
         for coefficient in self.coefficients:
             yield coefficient
