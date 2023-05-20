@@ -12,7 +12,7 @@ class Factorizer:
             factors.extend(
                 map(lambda x: (Poly([x[1], -x[0]]), x[2]), rational_roots[0]))
             poly = rational_roots[1]
-        while poly.has_root() and RootFinder.find_real_root(poly):
+        while RootFinder.find_real_root(poly):
             real_root = RootFinder.find_real_root(poly)
             deg = 0
             factor = Poly([1, -real_root])
@@ -20,7 +20,7 @@ class Factorizer:
                 poly = poly / factor
                 deg += 1
             factors.append((factor, deg))
-        while poly.has_root() and RootFinder.find_complex_root(poly):
+        while RootFinder.find_complex_root(poly):
             complex_root = RootFinder.find_complex_root(poly)
             deg = 0
             factor = Poly([1, -complex_root]) * Poly(

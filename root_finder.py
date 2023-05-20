@@ -48,6 +48,8 @@ class RootFinder:
 
     @staticmethod
     def _find_root_by_newton_(poly: Poly, point_selector):
+        if not poly.has_root():
+            return None
         derivative = ~poly
         area = max([abs(x) for x in poly])
         x_0 = point_selector(area)
