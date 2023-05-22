@@ -33,7 +33,7 @@ class Factorizer:
 
 
 if __name__ == '__main__':
-    expression = '(x ^ 4 + x ^ 2 + 1) * (x - 1) * (x - 3) * (2 * x - 5) ^ 2'
+    expression = '(x ^ 4 + 1) * (x - 1) * (x - 3) * (2 * x - 5) ^ 2'
     parsed_poly = Parser.parse(expression)
     factors = Factorizer.factorize(parsed_poly)
     for factor in factors:
