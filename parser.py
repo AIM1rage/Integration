@@ -98,11 +98,3 @@ class Parser:
     def _check_operation_correctness_(operator_to_check, operand1, operand2):
         # TODO
         return True
-
-
-if __name__ == '__main__':
-    result = list(map(Parser.parse, example.to_parse))
-    for poly in result:
-        for i in range(len(poly)):
-            print(f'{poly[i]}*x^{len(poly) - 1 - i}', end=' + ')
-        print()

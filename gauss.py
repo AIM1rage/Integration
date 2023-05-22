@@ -66,7 +66,7 @@ class Solver:
                 column_to_eliminate][column_to_eliminate]
             subtrahend = [value * scalar for value in
                           matrix[column_to_eliminate]]
-            matrix[i], = Solver._add_rows_(matrix[i], subtrahend)
+            matrix[i] = Solver._add_rows_(matrix[i], subtrahend)
             free_members[i] = free_members[i] + scalar * free_members[
                 column_to_eliminate]
 

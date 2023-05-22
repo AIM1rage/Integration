@@ -5,7 +5,7 @@ from parser import Parser
 
 class Factorizer:
     @staticmethod
-    def factorize(poly: Poly) -> list[tuple[Poly, int]]:
+    def factorize(poly: Poly):
         factors = list()
         rational_roots = RootFinder.find_rational_roots(poly)
         if rational_roots:
@@ -30,13 +30,15 @@ class Factorizer:
                 poly = poly / factor
                 deg += 1
             factors.append((factor, deg))
-        return factors
+        scalar = poly[-1]
+        return factors, scalar
 
 
 if __name__ == '__main__':
-    expression = '(x ^ 4 + 1) * (x - 1) * (x - 3) ^ 2 * (2 * x - 5) ^ 2'
+    expression = '(2 * x ^ 4 + 2) * (x - 1) * (x - 3) ^ 2 * (2 * x - 5) ^ 2'
     parsed_poly = Parser.parse(expression)
-    factors = Factorizer.factorize(parsed_poly)
-    for factor in factors:
-        print(factor[0], factor[1])
+    dividers, scalar = Factorizer.factorize(parsed_poly)
+    print(scalar)
+    for divider in dividers:
+        print(divider[0], divider[1])
     pass
