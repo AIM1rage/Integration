@@ -19,15 +19,19 @@ class RootFinder:
         for p in constant_dividers:
             for q in leading_dividers:
                 gcd = math.gcd(p, q)
+                p, q = p // gcd, q // gcd
                 if poly.is_root(p / q):
-                    candidates.add((p // gcd, q // gcd))
+                    candidates.add((p, q))
         poly_copy = Poly(poly)
+        candidates = sorted(candidates, key=lambda x: abs(x[0] / x[1]),
+                            reverse=True)
         for candidate in candidates:
             deg = 0
             while poly_copy.is_root(candidate[0] / candidate[1]):
                 deg += 1
                 poly_copy = poly_copy / Poly([candidate[1], -candidate[0]])
-            roots.append((candidate[0], candidate[1], deg))
+            if deg > 0:
+                roots.append((candidate[0], candidate[1], deg))
         return (roots, poly_copy) if roots else None
 
     # возвращает действительный корень многочлена,
