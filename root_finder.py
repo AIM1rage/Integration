@@ -8,10 +8,10 @@ class RootFinder:
     # если такового не нашлось - то возвращает None
     @staticmethod
     def find_rational_roots(poly: Poly):
-        roots = list()
-        leading = poly[0]
-        constant = poly[-1]
+        if not poly.has_root() or poly.is_zero():
+            return None
         candidates = set()
+        leading, constant, roots, poly = RootFinder._eliminate_x_(poly)
         constant_dividers = RootFinder._find_number_dividers_(constant)
         constant_dividers = constant_dividers + [-x for x in constant_dividers]
         leading_dividers = RootFinder._find_number_dividers_(leading)
@@ -51,7 +51,7 @@ class RootFinder:
 
     @staticmethod
     def _find_root_by_newton_(poly: Poly, point_selector):
-        if not poly.has_root():
+        if not poly.has_root() or poly.is_zero():
             return None
         derivative = ~poly
         area = max([abs(x) for x in poly])
@@ -69,6 +69,20 @@ class RootFinder:
                 x_0 = x_0 - poly.poly_val(x_0) / derivative.poly_val(x_0)
             x_0 = point_selector(area)
         return None
+
+    @staticmethod
+    def _eliminate_x_(poly):
+        leading = poly[0]
+        right_zeros_count = 0
+        nonzero_index = -1
+        while poly[nonzero_index] == 0:
+            nonzero_index -= 1
+            right_zeros_count += 1
+        constant = poly[nonzero_index]
+        roots = [(0, 1, right_zeros_count)]
+        for _ in range(right_zeros_count):
+            poly = poly / Poly([1, 0])
+        return leading, constant, roots, poly
 
     @staticmethod
     def _find_number_dividers_(n):

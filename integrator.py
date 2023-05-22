@@ -1,6 +1,6 @@
 from poly import Poly
 from factorizer import Factorizer
-from constants import epsilon
+from constants import *
 from parser import Parser
 from gauss import Solver
 
@@ -26,14 +26,15 @@ class Integrator:
 
     @staticmethod
     def _get_solution_(numerator, denominator, factors):
-        equations_count = sum(map(lambda x: x[1], factors))
+        equations_count = sum(
+            map(lambda x: x[1] * (len(x[0]) - 1), factors)) + 1
         matrix = [[0 for _ in range(equations_count)] for _ in
                   range(equations_count)]
         var_index = 0
         for factor in factors:
             for k in range(1, factor[1] + 1):
                 poly = denominator / (factor[0] ** k)
-                for j in range(len(poly) - 1):
+                for j in range(len(factor[0]) - 1):
                     for i in range(len(poly)):
                         matrix[i + j][var_index] = poly[len(poly) - 1 - i]
                     var_index += 1
@@ -47,7 +48,7 @@ class Integrator:
         var_index = 0
         for factor in factors:
             for k in range(1, factor[1] + 1):
-                deg = len(factor) - 1
+                deg = len(factor[0]) - 1
                 match deg:
                     case 1:
                         fractions.append(
@@ -55,8 +56,8 @@ class Integrator:
                         var_index += 1
                     case 2:
                         fractions.append((
-                            Poly([solution[var_index],
-                                  solution[var_index + 1]]),
+                            Poly([solution[var_index + 1],
+                                  solution[var_index]]),
                             factor[0], k))
                         var_index += 2
         return fractions
@@ -82,8 +83,10 @@ class Integrator:
 
 
 if __name__ == '__main__':
-    num = Parser.parse('1')
-    den = Parser.parse('x ^ 2 - 1')
-    for fraction in Integrator._decompose_fraction_(num, den):
-        print(fraction[0], fraction[1], fraction[2])
+    for fraction_to_decompose in to_decompose:
+        num = Parser.parse(fraction_to_decompose[0])
+        den = Parser.parse(fraction_to_decompose[1])
+        print(f'{num} / {den}')
+        for fraction in Integrator._decompose_fraction_(num, den):
+            print(fraction[0], fraction[1], fraction[2])
     pass

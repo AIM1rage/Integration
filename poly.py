@@ -6,10 +6,13 @@ class Poly:
         self.coefficients = list(iterable)
 
     def get_leading_coefficient(self):
-        return self.coefficients[0]
+        return self[0]
 
     def is_root(self, point):
         return is_root(self.coefficients, point)
+
+    def is_zero(self):
+        return all([abs(x) < epsilon for x in self])
 
     def poly_val(self, point):
         return value(self.coefficients, point)
