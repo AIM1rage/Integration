@@ -1,7 +1,6 @@
-import example
-from poly import *
-from constants import *
 import re
+from constants import *
+from poly import *
 
 
 class Parser:

@@ -1,6 +1,5 @@
 from poly import Poly
 from root_finder import RootFinder
-from parser import Parser
 
 
 class Factorizer:
@@ -32,13 +31,3 @@ class Factorizer:
             factors.append((factor, deg))
         scalar = poly[-1]
         return factors, scalar
-
-
-if __name__ == '__main__':
-    expression = '(2 * x ^ 4 + 2) * (x - 1) * (x - 3) ^ 2 * (2 * x - 5) ^ 2'
-    parsed_poly = Parser.parse(expression)
-    dividers, scalar = Factorizer.factorize(parsed_poly)
-    print(scalar)
-    for divider in dividers:
-        print(divider[0], divider[1])
-    pass

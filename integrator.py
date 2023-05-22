@@ -27,7 +27,7 @@ class Integrator:
     @staticmethod
     def _get_solution_(numerator, denominator, factors):
         equations_count = sum(
-            map(lambda x: x[1] * (len(x[0]) - 1), factors)) + 1
+            map(lambda y: y[1] * (len(y[0]) - 1), factors)) + 1
         matrix = [[0 for _ in range(equations_count)] for _ in
                   range(equations_count)]
         var_index = 0
