@@ -39,9 +39,9 @@ def add(poly1, poly2):
 @standard_notation
 def multiply(poly1, poly2):
     out = [0] * (len(poly1) + len(poly2) - 1)
-    for i in range(len(poly1) - 1, -1, -1):
-        for j in range(len(poly2) - 1, -1, -1):
-            out[len(poly1) + len(poly2) - 2 - i - j] += poly1[i] * poly2[j]
+    for i in range(len(poly1)):
+        for j in range(len(poly2)):
+            out[i + j] += poly1[len(poly1) - 1 - i] * poly2[len(poly2) - 1 - j]
     out.reverse()
     return out
 
