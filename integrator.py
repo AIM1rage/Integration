@@ -20,14 +20,16 @@ class Integrator:
                     terms.append(Integrator._integrate_linear_by_log_(
                         fraction_numerator,
                         fraction_denominator))
-                case 1:
+                case 1 if deg > 1:
                     terms.append(Integrator._integrate_linear_by_pow_function_(
                         fraction_numerator,
-                        fraction_denominator))
-                case 2:
+                        fraction_denominator,
+                        deg))
+                case 2 if deg >= 1:
                     terms.append(Integrator._integrate_quadratic_(
                         fraction_numerator,
-                        fraction_denominator))
+                        fraction_denominator,
+                        deg))
                 case _:
                     raise Exception
         return terms
@@ -86,12 +88,13 @@ class Integrator:
 
     # a / (q * x - p) ^ n
     @staticmethod
-    def _integrate_linear_by_pow_function_(numerator, denominator):
-        raise NotImplementedError
+    def _integrate_linear_by_pow_function_(numerator, denominator, deg):
+        return f'({numerator[0] / denominator[0] / (deg - 1)})/' \
+               f'({denominator[0]}*x+({denominator[1]}))^{deg + 1}'
 
     # (m * x + n) / (x ^ 2 + p * x + q) ^ k
     @staticmethod
-    def _integrate_quadratic_(numerator, denominator):
+    def _integrate_quadratic_(numerator, denominator, deg):
         raise NotImplementedError
 
 
