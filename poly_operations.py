@@ -82,3 +82,15 @@ def derivative(poly):
     for i in range(len(poly) - 1):
         out.append((n - i) * poly[i])
     return out
+
+
+# первообразная A(x) многочлена a(x)
+@standard_notation
+def integral(poly):
+    if not poly:
+        return [0]
+    n = len(poly)
+    out = [0] * (n + 1)
+    for i in range(len(poly)):
+        out[i] = poly[i] / (n - i)
+    return out

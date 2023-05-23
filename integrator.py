@@ -6,17 +6,31 @@ from gauss import Solver
 
 
 class Integrator:
-    def __init__(self):
-        self.terms = list()
-
-    def integrate(self, numerator: Poly, denominator: Poly):
+    @staticmethod
+    def integrate(numerator: Poly, denominator: Poly):
+        terms = list()
         quotient = numerator / denominator
         remainder = numerator % denominator
-        self._integrate_poly_(quotient)
-        for fraction in self._decompose_fraction_(remainder, denominator):
-            # TODO передавать дроби соответствующим методам
-            pass
-        return self.terms
+        terms.append(quotient.integral())
+        for fraction in Integrator._decompose_fraction_(remainder,
+                                                        denominator):
+            fraction_numerator, fraction_denominator, deg = fraction
+            match len(fraction_denominator) - 1:
+                case 1 if deg == 1:
+                    terms.append(Integrator._integrate_linear_by_log_(
+                        fraction_numerator,
+                        fraction_denominator))
+                case 1:
+                    terms.append(Integrator._integrate_linear_by_pow_function_(
+                        fraction_numerator,
+                        fraction_denominator))
+                case 2:
+                    terms.append(Integrator._integrate_quadratic_(
+                        fraction_numerator,
+                        fraction_denominator))
+                case _:
+                    raise Exception
+        return terms
 
     @staticmethod
     def _decompose_fraction_(numerator, denominator):
@@ -60,33 +74,32 @@ class Integrator:
                                   solution[var_index]]),
                             factor[0], k))
                         var_index += 2
+                    case _:
+                        raise Exception
         return fractions
 
-    def _integrate_poly_(self, poly):
-        for i in range(len(poly)):
-            coefficient = poly[i]
-            deg = len(poly) - 1 - i
-            if abs(poly[i]) > epsilon:
-                self.terms.append(f'{coefficient / (deg + 1)}*x^{deg + 1}')
-
     # a / (q * x - p)
-    def _integrate_linear_by_log_(self):
-        raise NotImplementedError
+    @staticmethod
+    def _integrate_linear_by_log_(numerator, denominator):
+        return f'{numerator[0] / denominator[0]}*' \
+               f'ln|{denominator[0]}*x+({denominator[1]})|'
 
     # a / (q * x - p) ^ n
-    def _integrate_linear_by_power_function_(self):
+    @staticmethod
+    def _integrate_linear_by_pow_function_(numerator, denominator):
         raise NotImplementedError
 
     # (m * x + n) / (x ^ 2 + p * x + q) ^ k
-    def _integrate_quadratic_(self):
+    @staticmethod
+    def _integrate_quadratic_(numerator, denominator):
         raise NotImplementedError
 
 
 if __name__ == '__main__':
-    for fraction_to_decompose in to_decompose:
-        num = Parser.parse(fraction_to_decompose[0])
-        den = Parser.parse(fraction_to_decompose[1])
+    for fraction_to_integrate in to_integrate:
+        num = Parser.parse(fraction_to_integrate[0])
+        den = Parser.parse(fraction_to_integrate[1])
         print(f'{num} / {den}')
-        for fraction in Integrator._decompose_fraction_(num, den):
-            print(fraction[0], fraction[1], fraction[2])
+        for simple_fraction in Integrator.integrate(num, den):
+            print(simple_fraction)
     pass

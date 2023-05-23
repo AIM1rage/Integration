@@ -75,11 +75,13 @@ class RootFinder:
         leading = poly[0]
         right_zeros_count = 0
         nonzero_index = -1
+        constant = poly[nonzero_index]
         while poly[nonzero_index] == 0:
             nonzero_index -= 1
             right_zeros_count += 1
-        constant = poly[nonzero_index]
-        roots = [(0, 1, right_zeros_count)]
+        roots = list()
+        if right_zeros_count:
+            roots.append((0, 1, right_zeros_count))
         for _ in range(right_zeros_count):
             poly = poly / Poly([1, 0])
         return leading, constant, roots, poly

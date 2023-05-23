@@ -20,6 +20,9 @@ class Poly:
     def has_root(self):
         return len(self) > 1 or abs(self[-1]) < epsilon
 
+    def integral(self):
+        return Poly(integral(self.coefficients))
+
     def __iter__(self):
         for coefficient in self.coefficients:
             yield coefficient
