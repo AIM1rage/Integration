@@ -89,8 +89,8 @@ class Integrator:
     # a / (q * x - p) ^ n
     @staticmethod
     def _integrate_linear_by_pow_function_(numerator, denominator, deg):
-        return f'({numerator[0] / denominator[0] / (deg - 1)})/' \
-               f'({denominator[0]}*x+({denominator[1]}))^{deg + 1}'
+        return f'({numerator[0] / denominator[0] / (-deg + 1)})/' \
+               f'({denominator[0]}*x+({denominator[1]}))^{deg - 1}'
 
     # (m * x + n) / (x ^ 2 + p * x + q) ^ k
     @staticmethod
