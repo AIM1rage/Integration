@@ -59,12 +59,12 @@ class Poly:
         elif isinstance(other, Poly):
             for i in range(len(other) - 1):
                 if abs(other[i]) > epsilon:
-                    raise ValueError
+                    raise ArithmeticError
             deg = other[-1]
         else:
-            raise ValueError
+            raise ArithmeticError
         if deg < 0:
-            raise ValueError
+            raise ArithmeticError
         elif deg == 0:
             return Poly([1])
         else:

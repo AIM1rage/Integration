@@ -15,4 +15,4 @@ class FractionTerm:
         yield self.denominator
 
     def __str__(self):
-        return f'({self.numerator}) / ({self.denominator})'
+        return f'({self.numerator}) / ({self.denominator})^{self.den_deg}'

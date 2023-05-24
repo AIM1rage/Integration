@@ -6,7 +6,9 @@ from constants import epsilon
 def standard_notation(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
-        standard_result = list(dropwhile(lambda x: abs(x) < epsilon, result))
+        standard_result = dropwhile(lambda x: abs(x) < epsilon, result)
+        standard_result = list(
+            map(lambda x: 0 if abs(x) < epsilon else x, standard_result))
         if not standard_result:
             return [0]
         return standard_result

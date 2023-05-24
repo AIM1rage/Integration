@@ -93,21 +93,45 @@ class Integrator:
     # a / (q * x - p) ^ n, n > 1
     @staticmethod
     def _integrate_linear_by_pow_function_(numerator, denominator, deg, terms):
-        new_numerator = Poly([numerator[0] / denominator[0] / (-deg + 1)])
+        new_numerator = Poly([numerator[0] / (denominator[0] * (-deg + 1))])
         terms.append(FractionTerm(new_numerator, denominator, deg - 1))
 
     # (m * x + n) / (x ^ 2 + p * x + q) ^ k
     @staticmethod
     def _integrate_quadratic_(numerator, denominator, deg, terms):
+        m, n = [0] * (max(0, 2 - len(numerator))) + numerator.coefficients
+        _, p, q = denominator
         if deg == 1:
-            m, n = numerator
-            _, p, q = denominator
             coefficient = (2 * n - m * p) / (4 * q - p ** 2) ** (1 / 2)
             expression = (1 / (4 * q - p ** 2) ** (1 / 2)) * Poly([2, p])
             terms.append(LogTerm(m / 2, denominator))
             terms.append(AtanTerm(coefficient, expression))
-        else:
-            raise NotImplementedError
+            return
+        new_numerator = m / (2 * (-deg + 1)) * Poly([1])
+        terms.append(FractionTerm(new_numerator, denominator, deg - 1))
+        multiplier = (2 * n - m * p) / 2
+        fraction = FractionTerm(Poly([1]), denominator, deg)
+        Integrator.__integrate_simple_quadratic__(multiplier, fraction, terms)
+
+    @staticmethod
+    def __integrate_simple_quadratic__(multiplier, fraction, terms):
+        _, p, q = fraction.denominator
+        m2 = 4 * q - p ** 2
+        if fraction.den_deg == 1:
+            coefficient = 2 * multiplier / m2 ** (1 / 2)
+            expression = (1 / m2 ** (1 / 2)) * Poly([2, p])
+            terms.append(AtanTerm(coefficient, expression))
+            return
+        coefficient0 = multiplier / (m2 * (fraction.den_deg - 1))
+        terms.append(FractionTerm(coefficient0 * Poly([2, p]),
+                                  fraction.denominator,
+                                  fraction.den_deg - 1))
+        new_mult = 2 * multiplier * (2 * fraction.den_deg - 3
+                                     ) / (m2 * (fraction.den_deg - 1))
+        new_frac = FractionTerm(fraction.numerator,
+                                fraction.denominator,
+                                fraction.den_deg - 1)
+        Integrator.__integrate_simple_quadratic__(new_mult, new_frac, terms)
 
 
 if __name__ == '__main__':
