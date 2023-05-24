@@ -3,9 +3,9 @@ from factorizer import Factorizer
 from constants import *
 from parser import Parser
 from gauss import Solver
-from fraction_term import FractionTerm
-from log_term import LogTerm
-from atan_term import AtanTerm
+from terms.fraction_term import FractionTerm
+from terms.log_term import LogTerm
+from terms.atan_term import AtanTerm
 
 
 class Integrator:
