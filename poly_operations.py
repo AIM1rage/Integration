@@ -55,7 +55,7 @@ def divide_mod(dividend, divisor):
     for i in range(len(dividend) - len(divisor) + 1):
         out[i] /= norm
         coefficient = out[i]
-        if coefficient != 0:
+        if abs(coefficient) > epsilon:
             for j in range(1, len(divisor)):
                 out[i + j] += -divisor[j] * coefficient
     separator = 1 - len(divisor)

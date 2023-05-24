@@ -15,7 +15,10 @@ class Integrator:
         numerator, denominator = rational_fraction
         quotient = numerator / denominator
         remainder = numerator % denominator
-        terms.append(quotient.integral())
+        if len(denominator) == 1:
+            terms.append(remainder.integral())
+        else:
+            terms.append(quotient.integral())
         for fraction in Integrator._decompose_fraction_(remainder,
                                                         denominator):
             fraction_numerator, fraction_denominator, deg = fraction
