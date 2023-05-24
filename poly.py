@@ -1,9 +1,14 @@
 from poly_operations import *
+from constants import epsilon
+from itertools import dropwhile
 
 
 class Poly:
     def __init__(self, iterable):
-        self.coefficients = list(iterable)
+        self.coefficients = list(
+            dropwhile(lambda x: abs(x) < epsilon, iterable))
+        if not self.coefficients:
+            self.coefficients = [0]
 
     def get_leading_coefficient(self):
         return self[0]

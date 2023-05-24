@@ -52,6 +52,8 @@ def divide_mod(dividend, divisor):
     norm = divisor[0]
     if all([abs(x) < epsilon for x in divisor]):
         raise ZeroDivisionError
+    if len(divisor) == 1:
+        return [x / divisor[0] for x in dividend], []
     for i in range(len(dividend) - len(divisor) + 1):
         out[i] /= norm
         coefficient = out[i]
