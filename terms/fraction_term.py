@@ -1,6 +1,8 @@
 class FractionTerm:
     def __init__(self, numerator, denominator, den_deg: int = 1):
         self.numerator = numerator
+        if denominator.is_zero():
+            raise ArithmeticError
         self.denominator = denominator
         self.den_deg = den_deg
 

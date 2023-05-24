@@ -44,11 +44,11 @@ if __name__ == '__main__':
         denominator = input('Введите знаменатель рациональной дроби: ')
         try:
             parsed_denominator = Parser.parse(denominator)
+            fraction = FractionTerm(parsed_numerator, parsed_denominator)
+            terms = Integrator.integrate(fraction)
             break
         except ArithmeticError or IndexError:
             continue
-    fraction = FractionTerm(parsed_numerator, parsed_denominator)
-    terms = Integrator.integrate(fraction)
     print()
     print('Первообразная равна')
     print(' + '.join([str(x) for x in terms + ['C']]))

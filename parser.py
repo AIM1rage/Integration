@@ -6,6 +6,8 @@ from poly import *
 class Parser:
     @staticmethod
     def parse(expression: str) -> Poly:
+        if not expression:
+            raise ArithmeticError
         expression_without_spaces = str(re.sub('\\s', '', expression))
         return Parser._calculate_postfix_(
             Parser._to_postfix_(expression_without_spaces))
