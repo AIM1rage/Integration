@@ -6,7 +6,7 @@ if __name__ == '__main__':
     result1 = a + b
     result2 = a * b
     result3 = b / a
-    result4 = (a + b).poly_val(1)
+    result4 = (a + b).value(1)
     result5 = 5 * a
     result6 = b.is_root(-1)
     result7 = b.is_root(1)

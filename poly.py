@@ -14,7 +14,7 @@ class Poly:
     def is_zero(self):
         return all([abs(x) < epsilon for x in self])
 
-    def poly_val(self, point):
+    def value(self, point):
         return value(self.coefficients, point)
 
     def has_root(self):
@@ -80,4 +80,8 @@ class Poly:
         return self.coefficients[index]
 
     def __str__(self):
-        return str(self.coefficients)
+        deg = len(self.coefficients) - 1
+        return ' + '.join([f'({self.coefficients[i]})x^{deg - i}'
+                           if deg - i > 0 else
+                           f'({self.coefficients[i]})'
+                           for i in range(deg + 1)])

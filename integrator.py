@@ -3,12 +3,16 @@ from factorizer import Factorizer
 from constants import *
 from parser import Parser
 from gauss import Solver
+from fraction_term import FractionTerm
+from log_term import LogTerm
+from atan_term import AtanTerm
 
 
 class Integrator:
     @staticmethod
-    def integrate(numerator: Poly, denominator: Poly):
+    def integrate(rational_fraction: FractionTerm):
         terms = list()
+        numerator, denominator = rational_fraction
         quotient = numerator / denominator
         remainder = numerator % denominator
         terms.append(quotient.integral())
@@ -17,19 +21,20 @@ class Integrator:
             fraction_numerator, fraction_denominator, deg = fraction
             match len(fraction_denominator) - 1:
                 case 1 if deg == 1:
-                    terms.append(Integrator._integrate_linear_by_log_(
+                    Integrator._integrate_linear_by_log_(
                         fraction_numerator,
-                        fraction_denominator))
+                        fraction_denominator,
+                        terms)
                 case 1 if deg > 1:
-                    terms.append(Integrator._integrate_linear_by_pow_function_(
+                    Integrator._integrate_linear_by_pow_function_(
                         fraction_numerator,
                         fraction_denominator,
-                        deg))
+                        deg, terms)
                 case 2 if deg >= 1:
-                    terms.append(Integrator._integrate_quadratic_(
+                    Integrator._integrate_quadratic_(
                         fraction_numerator,
                         fraction_denominator,
-                        deg))
+                        deg, terms)
                 case _:
                     raise Exception
         return terms
@@ -82,27 +87,36 @@ class Integrator:
 
     # a / (q * x - p)
     @staticmethod
-    def _integrate_linear_by_log_(numerator, denominator):
-        return f'{numerator[0] / denominator[0]}*' \
-               f'ln|{denominator[0]}*x+({denominator[1]})|'
+    def _integrate_linear_by_log_(numerator, denominator, terms):
+        terms.append(LogTerm(numerator[0] / denominator[0], denominator))
 
-    # a / (q * x - p) ^ n
+    # a / (q * x - p) ^ n, n > 1
     @staticmethod
-    def _integrate_linear_by_pow_function_(numerator, denominator, deg):
-        return f'({numerator[0] / denominator[0] / (-deg + 1)})/' \
-               f'({denominator[0]}*x+({denominator[1]}))^{deg - 1}'
+    def _integrate_linear_by_pow_function_(numerator, denominator, deg, terms):
+        new_numerator = Poly([numerator[0] / denominator[0] / (-deg + 1)])
+        terms.append(FractionTerm(new_numerator, denominator, deg - 1))
 
     # (m * x + n) / (x ^ 2 + p * x + q) ^ k
     @staticmethod
-    def _integrate_quadratic_(numerator, denominator, deg):
-        raise NotImplementedError
+    def _integrate_quadratic_(numerator, denominator, deg, terms):
+        if deg == 1:
+            m, n = numerator
+            _, p, q = denominator
+            coefficient = (2 * n - m * p) / (4 * q - p ** 2) ** (1 / 2)
+            expression = (1 / (4 * q - p ** 2) ** (1 / 2)) * Poly([2, p])
+            terms.append(LogTerm(m / 2, denominator))
+            terms.append(AtanTerm(coefficient, expression))
+        else:
+            raise NotImplementedError
 
 
 if __name__ == '__main__':
     for fraction_to_integrate in to_integrate:
         num = Parser.parse(fraction_to_integrate[0])
         den = Parser.parse(fraction_to_integrate[1])
-        print(f'{num} / {den}')
-        for simple_fraction in Integrator.integrate(num, den):
+        rat_frac = FractionTerm(num, den, 1)
+        print(rat_frac)
+        for simple_fraction in Integrator.integrate(rat_frac):
             print(simple_fraction)
+        print()
     pass

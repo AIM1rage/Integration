@@ -62,11 +62,11 @@ class RootFinder:
             for j in range(iterations_count):
                 k = 0
                 while poly.is_root(x_0) and k < iterations_count:
-                    x_0 = x_0 - poly.poly_val(x_0) / derivative.poly_val(x_0)
+                    x_0 = x_0 - poly.value(x_0) / derivative.value(x_0)
                     k += 1
                 if poly.is_root(x_0):
                     return x_0
-                x_0 = x_0 - poly.poly_val(x_0) / derivative.poly_val(x_0)
+                x_0 = x_0 - poly.value(x_0) / derivative.value(x_0)
             x_0 = point_selector(area)
         return None
 
