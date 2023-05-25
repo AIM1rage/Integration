@@ -14,4 +14,4 @@ class AtanTerm:
         yield self.expression
 
     def __str__(self):
-        return f'({self.coefficient})atan({self.expression})'
+        return f'({self.coefficient})atan[{self.expression}]'

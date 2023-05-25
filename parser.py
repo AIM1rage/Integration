@@ -21,8 +21,12 @@ class Parser:
             elif token == 'x':
                 stack.append(Poly([1, 0]))
             elif token in operators:
-                operand2 = stack.pop()
-                operand1 = stack.pop()
+                if token == '-' and (len(stack) < 2 or stack[-2] in operators):
+                    operand2 = stack.pop()
+                    operand1 = Poly([0])
+                else:
+                    operand2 = stack.pop()
+                    operand1 = stack.pop()
                 Parser._check_operation_correctness_(operators[token],
                                                      operand1,
                                                      operand2)

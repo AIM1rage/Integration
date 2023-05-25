@@ -15,7 +15,8 @@ class Integrator:
         numerator, denominator = rational_fraction
         quotient = numerator / denominator
         remainder = numerator % denominator
-        terms.append(quotient.integral())
+        if not quotient.is_zero():
+            terms.append(quotient.integral())
         for fraction in Integrator._decompose_fraction_(remainder,
                                                         denominator):
             fraction_numerator, fraction_denominator, deg = fraction
@@ -88,13 +89,19 @@ class Integrator:
     # a / (q * x - p)
     @staticmethod
     def _integrate_linear_by_log_(numerator, denominator, terms):
-        terms.append(LogTerm(numerator[0] / denominator[0], denominator))
+        coefficient = numerator[0] / denominator[0]
+        Integrator.__add_term__(coefficient, terms,
+                                LogTerm(coefficient, denominator))
 
     # a / (q * x - p) ^ n, n > 1
     @staticmethod
     def _integrate_linear_by_pow_function_(numerator, denominator, deg, terms):
-        new_numerator = Poly([numerator[0] / (denominator[0] * (-deg + 1))])
-        terms.append(FractionTerm(new_numerator, denominator, deg - 1))
+        coefficient = numerator[0] / (denominator[0] * (-deg + 1))
+        new_numerator = Poly([coefficient])
+        Integrator.__add_term__(coefficient, terms,
+                                FractionTerm(new_numerator,
+                                             denominator,
+                                             deg - 1))
 
     # (m * x + n) / (x ^ 2 + p * x + q) ^ k
     @staticmethod
@@ -104,11 +111,15 @@ class Integrator:
         if deg == 1:
             coefficient = (2 * n - m * p) / (4 * q - p ** 2) ** (1 / 2)
             expression = (1 / (4 * q - p ** 2) ** (1 / 2)) * Poly([2, p])
-            terms.append(LogTerm(m / 2, denominator))
-            terms.append(AtanTerm(coefficient, expression))
+            Integrator.__add_term__(m, terms, LogTerm(m / 2, denominator))
+            Integrator.__add_term__(coefficient, terms,
+                                    AtanTerm(coefficient, expression))
             return
         new_numerator = m / (2 * (-deg + 1)) * Poly([1])
-        terms.append(FractionTerm(new_numerator, denominator, deg - 1))
+        Integrator.__add_term__(new_numerator[-1], terms,
+                                FractionTerm(new_numerator,
+                                             denominator,
+                                             deg - 1))
         multiplier = (2 * n - m * p) / 2
         fraction = FractionTerm(Poly([1]), denominator, deg)
         Integrator.__integrate_simple_quadratic__(multiplier, fraction, terms)
@@ -120,18 +131,25 @@ class Integrator:
         if fraction.den_deg == 1:
             coefficient = 2 * multiplier / m2 ** (1 / 2)
             expression = (1 / m2 ** (1 / 2)) * Poly([2, p])
-            terms.append(AtanTerm(coefficient, expression))
+            Integrator.__add_term__(coefficient, terms,
+                                    AtanTerm(coefficient, expression))
             return
         coefficient0 = multiplier / (m2 * (fraction.den_deg - 1))
-        terms.append(FractionTerm(coefficient0 * Poly([2, p]),
-                                  fraction.denominator,
-                                  fraction.den_deg - 1))
+        Integrator.__add_term__(coefficient0, terms,
+                                FractionTerm(coefficient0 * Poly([2, p]),
+                                             fraction.denominator,
+                                             fraction.den_deg - 1))
         new_mult = 2 * multiplier * (2 * fraction.den_deg - 3
                                      ) / (m2 * (fraction.den_deg - 1))
         new_frac = FractionTerm(fraction.numerator,
                                 fraction.denominator,
                                 fraction.den_deg - 1)
         Integrator.__integrate_simple_quadratic__(new_mult, new_frac, terms)
+
+    @staticmethod
+    def __add_term__(coefficient, terms, term):
+        if abs(coefficient) > epsilon:
+            terms.append(term)
 
 
 if __name__ == '__main__':

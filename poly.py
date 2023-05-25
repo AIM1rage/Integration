@@ -87,6 +87,5 @@ class Poly:
     def __str__(self):
         deg = len(self.coefficients) - 1
         return ' + '.join([f'({self.coefficients[i]})x^{deg - i}'
-                           if deg - i > 0 else
-                           f'({self.coefficients[i]})'
-                           for i in range(deg + 1)])
+                           for i in range(deg + 1) if
+                           abs(self.coefficients[i]) > epsilon])
