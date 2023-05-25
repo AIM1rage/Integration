@@ -38,8 +38,12 @@ if __name__ == '__main__':
         try:
             parsed_numerator = Parser.parse(numerator)
             break
-        except ArithmeticError or IndexError:
-            continue
+        except ArithmeticError:
+            print('Некорректный ввод! Проблема с операциями')
+            print()
+        except IndexError:
+            print('Некорректный ввод! Проблема с вводом')
+            print()
     while True:
         denominator = input('Введите знаменатель рациональной дроби: ')
         try:
@@ -47,8 +51,12 @@ if __name__ == '__main__':
             fraction = FractionTerm(parsed_numerator, parsed_denominator)
             terms = Integrator.integrate(fraction)
             break
-        except ArithmeticError or IndexError:
-            continue
+        except ArithmeticError:
+            print('Некорректный ввод! Проблема с операциями')
+            print()
+        except IndexError:
+            print('Некорректный ввод! Проблема с вводом')
+            print()
     print()
     print('Первообразная равна')
     print(' + '.join([str(x) for x in terms + ['C']]))

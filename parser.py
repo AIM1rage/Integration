@@ -31,7 +31,9 @@ class Parser:
                                                      operand1,
                                                      operand2)
                 stack.append(operators[token](operand1, operand2))
-        return stack.pop()
+        if len(stack) == 1:
+            return stack.pop()
+        raise ArithmeticError
 
     @staticmethod
     def _to_postfix_(expression):
