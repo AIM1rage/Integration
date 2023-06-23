@@ -41,6 +41,18 @@ class Integrator:
         return terms
 
     @staticmethod
+    def indefinite_integral(terms):
+        return ' + '.join(map(str, terms + ['C']))
+
+    @staticmethod
+    def definite_integral(terms, a, b):
+        value1 = value2 = 0
+        for term in terms:
+            value1 += term.value(a)
+            value2 += term.value(b)
+        return value2 - value1
+
+    @staticmethod
     def _decompose_fraction_(numerator, denominator):
         factors, scalar = Factorizer.factorize(denominator)
         solution = Integrator._get_solution_(numerator, denominator, factors)

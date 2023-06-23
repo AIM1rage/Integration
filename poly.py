@@ -31,7 +31,7 @@ class Poly:
     @staticmethod
     def _term_to_string_(coefficient, deg, index):
         if deg - index == 0:
-            return str(coefficient)
+            return f'({coefficient})'
         elif deg - index == 1:
             return f'({coefficient})x'
         else:

@@ -1,10 +1,9 @@
 from parser import Parser
 from integrator import Integrator
 from terms.fraction_term import FractionTerm
-
+import gralpy
 
 def read_definite_integral_bounds(terms):
-    calculate = False
     while True:
         user_input = input(
             'Вы хотите посчитать определенный интеграл? [Y/N] ').lower()
@@ -15,12 +14,8 @@ def read_definite_integral_bounds(terms):
         return
     a = read_bound(1)
     b = read_bound(2)
-    value1 = value2 = 0
-    for term in terms:
-        value1 += term.value(a)
-        value2 += term.value(b)
     print('Определенный интеграл равен')
-    print(value2 - value1)
+    print(Integrator.definite_integral(terms, a, b))
 
 
 def read_bound(bound_number):
@@ -32,33 +27,30 @@ def read_bound(bound_number):
             continue
 
 
+def read_polynomial(message):
+    while True:
+        polynomial = input(message)
+        try:
+            parsed_polynomial = Parser.parse(polynomial)
+            break
+        except ArithmeticError:
+            print(
+                'Некорректный ввод! Возможно, возведение в степень многочлена')
+            print()
+        except ValueError as error:
+            print(f'{str(error)}')
+            print()
+    return parsed_polynomial
+
+
 if __name__ == '__main__':
-    while True:
-        numerator = input('Введите числитель рациональной дроби: ')
-        try:
-            parsed_numerator = Parser.parse(numerator)
-            break
-        except ArithmeticError:
-            print('Некорректный ввод! Проблема с операциями')
-            print()
-        except IndexError:
-            print('Некорректный ввод! Проблема с вводом')
-            print()
-    while True:
-        denominator = input('Введите знаменатель рациональной дроби: ')
-        try:
-            parsed_denominator = Parser.parse(denominator)
-            fraction = FractionTerm(parsed_numerator, parsed_denominator)
-            terms = Integrator.integrate(fraction)
-            break
-        except ArithmeticError:
-            print('Некорректный ввод! Проблема с операциями')
-            print()
-        except IndexError:
-            print('Некорректный ввод! Проблема с вводом')
-            print()
+    print(gralpy.integrate('1', 'x^2 + 1', 0, 1))
+    numerator = read_polynomial('Введите числитель рациональной дроби: ')
+    denominator = read_polynomial('Введите знаменатель рациональной дроби: ')
+    fraction = FractionTerm(numerator, denominator)
+    terms = Integrator.integrate(fraction)
     print()
     print('Первообразная равна')
-    print(' + '.join([str(x) for x in terms + ['C']]))
+    print(Integrator.indefinite_integral(terms))
     print()
     read_definite_integral_bounds(terms)
