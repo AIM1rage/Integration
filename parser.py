@@ -23,7 +23,12 @@ class Parser:
                 operand1 = stack.pop()
                 stack.append(operators[token](operand1, operand2))
             else:
-                raise Exception(f'{token}')
+                line = ' '.join(map(str, postfix))
+                raise ValueError(f'Некорректный ввод! Стек: "{line}"')
+        if len(stack) != 1:
+            line = ' '.join(map(str, postfix))
+            raise ValueError(
+                f'Некорректный ввод! Стек не опустошился: "{line}"')
         return stack.pop()
 
     @staticmethod
@@ -74,9 +79,10 @@ class Parser:
             if previous_token in operators.keys():
                 raise ValueError(f'Двойной оператор! '
                                  f'Не следует операторы '
-                                 f'\'{previous_token}\' и \'{token}\' подряд')
+                                 f'"{previous_token}" и "{token}" подряд. '
+                                 f'Выражение: "{expression}"')
             if token == '-' and (
-                    previous_token is None or previous_token == '('):
+                    previous_token is None or previous_token in brackets.keys()):
                 postfix.append(0)
             while len(stack) > 0 and \
                     stack[-1] in operators.keys() and \
@@ -87,6 +93,8 @@ class Parser:
             index = operator_result[1]
         elif open_bracket_result:
             token = open_bracket_result[0]
+            if previous_token == brackets[token]:
+                stack.append('*')
             stack.append(token)
             index = open_bracket_result[1]
         elif close_bracket_result:
@@ -95,10 +103,11 @@ class Parser:
                 postfix.append(stack.pop())
             if len(stack) == 0 or \
                     brackets[stack.pop()] != close_bracket_result[0]:
-                raise ValueError('Пропущена открывающая скобка!')
+                raise ValueError(
+                    f'Пропущена открывающая скобка! Выражение: "{expression}"')
             index = close_bracket_result[1]
         else:
-            raise ValueError(f'Неизвестный символ \'{expression[index]}\'!')
+            raise ValueError(f'Неизвестный символ "{expression[index]}"!')
         return token, index
 
     # пытается прочитать число и возвращает (number, index),
