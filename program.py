@@ -1,7 +1,7 @@
 from parser import Parser
 from integrator import Integrator
 from terms.fraction_term import FractionTerm
-import gralpy
+
 
 def read_definite_integral_bounds(terms):
     while True:
@@ -44,7 +44,6 @@ def read_polynomial(message):
 
 
 if __name__ == '__main__':
-    print(gralpy.integrate('1', 'x^2 + 1', 0, 1))
     numerator = read_polynomial('Введите числитель рациональной дроби: ')
     denominator = read_polynomial('Введите знаменатель рациональной дроби: ')
     fraction = FractionTerm(numerator, denominator)

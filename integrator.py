@@ -165,7 +165,7 @@ class Integrator:
 
 
 if __name__ == '__main__':
-    for fraction_to_integrate in to_integrate:
+    for fraction_to_integrate in to_antiderivatives:
         num = Parser.parse(fraction_to_integrate[0])
         den = Parser.parse(fraction_to_integrate[1])
         rat_frac = FractionTerm(num, den, 1)
