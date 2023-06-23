@@ -68,7 +68,6 @@ class Parser:
                 postfix.append(token)
                 index = x_result[1]
             if type(previous_token) == Poly:
-                print('Yes!')
                 stack.append('*')
         elif operator_result:
             token = operator_result[0]

@@ -28,6 +28,15 @@ class Poly:
     def integral(self):
         return Poly(integral(self.coefficients))
 
+    @staticmethod
+    def _term_to_string_(coefficient, deg, index):
+        if deg - index == 0:
+            return str(coefficient)
+        elif deg - index == 1:
+            return f'({coefficient})x'
+        else:
+            return f'({coefficient})x^{deg - index}'
+
     def __iter__(self):
         for coefficient in self.coefficients:
             yield coefficient
@@ -86,6 +95,6 @@ class Poly:
 
     def __str__(self):
         deg = len(self.coefficients) - 1
-        return ' + '.join([f'({self.coefficients[i]})x^{deg - i}'
+        return ' + '.join([Poly._term_to_string_(self.coefficients[i], deg, i)
                            for i in range(deg + 1) if
                            abs(self.coefficients[i]) > epsilon])
