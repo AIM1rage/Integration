@@ -4,12 +4,14 @@ from gralpy import integrate
 
 
 class IntegralTest(unittest.TestCase):
+    """
+    Проверяет, найдена ли верная первообразная по 10 различным значениям
+    определенного интеграла от этой первообразной
+    по формуле Ньютона-Лейбница.
+    """
+
     def test_integral_calculation(self):
-        """
-        Проверяет, найдена ли верная первообразная по 10 различным значениям
-        определенного интеграла от этой первообразной
-        по формуле Ньютона-Лейбница.
-        """
+
         for to_antiderivative in constants.to_antiderivatives:
             numerator, denominator, expected = to_antiderivative
             for i in range(10):
