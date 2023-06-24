@@ -53,6 +53,7 @@ if __name__ == '__main__':
             break
         except ArithmeticError as error:
             print(str(error))
+            print()
     terms = Integrator.integrate(fraction)
     print()
     print('Первообразная равна')

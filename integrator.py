@@ -74,6 +74,10 @@ class Integrator:
                     var_index += 1
         free_members = list(reversed(numerator)) + [0] * (
                 equations_count - len(numerator))
+        solution = Solver.solve(matrix, free_members)
+        if solution is None:
+            raise ValueError(
+                'У системы уравнений нет решений! Не хватает точности, попробуйте интеграл попроще :)')
         return Solver.solve(matrix, free_members)
 
     @staticmethod
@@ -162,15 +166,3 @@ class Integrator:
     def __add_term__(coefficient, terms, term):
         if abs(coefficient) > epsilon:
             terms.append(term)
-
-
-if __name__ == '__main__':
-    for fraction_to_integrate in to_antiderivatives:
-        num = Parser.parse(fraction_to_integrate[0])
-        den = Parser.parse(fraction_to_integrate[1])
-        rat_frac = FractionTerm(num, den, 1)
-        print(rat_frac)
-        for simple_fraction in Integrator.integrate(rat_frac):
-            print(simple_fraction)
-        print()
-    pass
