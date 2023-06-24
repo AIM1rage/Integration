@@ -16,8 +16,10 @@ class Parser:
     def _calculate_postfix_(postfix):
         stack = list()
         for token in postfix:
-            if type(token) == Poly:
+            if isinstance(token, Poly):
                 stack.append(token)
+            elif isinstance(token, int):
+                stack.append(Poly([token]))
             elif token in operators:
                 operand2 = stack.pop()
                 operand1 = stack.pop()
@@ -65,20 +67,21 @@ class Parser:
                     expression, postfix, stack, index, previous_token):
         if number_result or x_result:
             if number_result:
-                token = Poly([number_result[0]])
+                token = number_result[0]
                 postfix.append(token)
                 index = number_result[1]
             else:
                 token = Poly([1, 0])
                 postfix.append(token)
                 index = x_result[1]
-            if type(previous_token) == Poly:
+            if isinstance(previous_token, Poly) or \
+                    isinstance(previous_token, int):
                 stack.append('*')
         elif operator_result:
             token = operator_result[0]
             if previous_token in operators.keys():
                 raise ValueError(f'Двойной оператор! '
-                                 f'Не следует операторы '
+                                 f'Не следует писать операторы '
                                  f'"{previous_token}" и "{token}" подряд. '
                                  f'Выражение: "{expression}"')
             if token == '-' and (

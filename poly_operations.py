@@ -53,7 +53,7 @@ def divide_mod(dividend, divisor):
     out = list(dividend)
     norm = divisor[0]
     if all([abs(x) < epsilon for x in divisor]):
-        raise ArithmeticError
+        raise ArithmeticError('Деление на ноль!')
     if len(divisor) == 1:
         return [x / divisor[0] for x in dividend], []
     for i in range(len(dividend) - len(divisor) + 1):
