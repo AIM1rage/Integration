@@ -68,12 +68,12 @@ class Poly:
         elif isinstance(other, Poly):
             for i in range(len(other) - 1):
                 if abs(other[i]) > epsilon:
-                    raise ArithmeticError
+                    raise ArithmeticError('Возведение в степень многочлена!')
             deg = other[-1]
         else:
-            raise ArithmeticError
+            raise TypeError('Можно возводить только в степень числа!')
         if deg < 0:
-            raise ArithmeticError
+            raise ArithmeticError('Возведение в отрицательную степень!')
         elif deg == 0:
             return Poly([1])
         else:

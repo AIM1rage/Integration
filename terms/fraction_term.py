@@ -2,7 +2,7 @@ class FractionTerm:
     def __init__(self, numerator, denominator, den_deg: int = 1):
         self.numerator = numerator
         if denominator.is_zero():
-            raise ArithmeticError
+            raise ArithmeticError('Деление на ноль!')
         self.denominator = denominator
         self.den_deg = den_deg
 

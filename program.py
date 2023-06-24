@@ -33,20 +33,26 @@ def read_polynomial(message):
         try:
             parsed_polynomial = Parser.parse(polynomial)
             break
-        except ArithmeticError:
-            print(
-                'Некорректный ввод! Возможно, возведение в степень многочлена')
+        except ArithmeticError as arithmetic_error:
+            print(str(arithmetic_error))
             print()
-        except ValueError as error:
-            print(f'{str(error)}')
+        except ValueError as value_error:
+            print(str(value_error))
             print()
     return parsed_polynomial
 
 
 if __name__ == '__main__':
-    numerator = read_polynomial('Введите числитель рациональной дроби: ')
-    denominator = read_polynomial('Введите знаменатель рациональной дроби: ')
-    fraction = FractionTerm(numerator, denominator)
+    while True:
+        try:
+            numerator = read_polynomial(
+                'Введите числитель рациональной дроби: ')
+            denominator = read_polynomial(
+                'Введите знаменатель рациональной дроби: ')
+            fraction = FractionTerm(numerator, denominator)
+            break
+        except ArithmeticError as error:
+            print(str(error))
     terms = Integrator.integrate(fraction)
     print()
     print('Первообразная равна')
