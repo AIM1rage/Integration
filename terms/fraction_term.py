@@ -8,7 +8,7 @@ class FractionTerm:
 
     def value(self, point):
         if self.denominator.is_root(point):
-            return None
+            raise ArithmeticError('Деление на ноль!')
         return self.numerator.value(point) / self.denominator.value(
             point) ** self.den_deg
 

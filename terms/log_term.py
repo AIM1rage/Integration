@@ -8,7 +8,7 @@ class LogTerm:
 
     def value(self, point):
         if self.expression.is_root(point):
-            return None
+            raise ArithmeticError('Логарифм не определен в нуле!')
         return self.coefficient * \
             math.log(abs(self.expression.value(point)), math.e)
 

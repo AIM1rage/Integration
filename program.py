@@ -12,10 +12,17 @@ def read_definite_integral_bounds(terms):
             break
     if not calculate:
         return
-    a = read_bound(1)
-    b = read_bound(2)
+    while True:
+        try:
+            a = read_bound(1)
+            b = read_bound(2)
+            definite_integral = Integrator.definite_integral(terms, a, b)
+            break
+        except ArithmeticError as arithmetic_error:
+            print(str(arithmetic_error))
+            print()
     print('Определенный интеграл равен')
-    print(Integrator.definite_integral(terms, a, b))
+    print(definite_integral)
 
 
 def read_bound(bound_number):
@@ -23,8 +30,10 @@ def read_bound(bound_number):
         user_input = input(f'Введите {bound_number}-ю границу: ')
         try:
             return float(user_input)
-        except ValueError:
-            continue
+        except ValueError as value_error:
+            print(str(value_error))
+            print()
+
 
 
 def read_polynomial(message):
