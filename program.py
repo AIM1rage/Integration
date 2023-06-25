@@ -21,6 +21,7 @@ def read_definite_integral_bounds(terms):
         except ArithmeticError as arithmetic_error:
             print(str(arithmetic_error))
             print()
+    print()
     print('Определенный интеграл равен')
     print(definite_integral)
 
@@ -33,7 +34,6 @@ def read_bound(bound_number):
         except ValueError as value_error:
             print(str(value_error))
             print()
-
 
 
 def read_polynomial(message):
