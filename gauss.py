@@ -1,33 +1,45 @@
 from constants import *
+import matrix_operations
 
 
 # Класс Solver реализует методы для решения СЛУ методом Гаусса.
 class Solver:
+    # преобразует СЛУ для применения МНК
+    @staticmethod
+    def convert_system(matrix, free_members):
+        transposed_matrix = matrix_operations.transpose(matrix)
+        new_matrix = matrix_operations.multiply(
+            transposed_matrix,
+            matrix)
+        new_free_members = [z[0] for z in
+                            matrix_operations.multiply(transposed_matrix,
+                                                       [[y] for y in
+                                                        free_members])]
+        return new_matrix, new_free_members
+
     # принимает матрицу коэффициентов и массив свободных членов,
     # и возвращает массив значений неизвестных переменных.
     @staticmethod
     def solve(matrix: list[list[float]],
               free_members: list[float]):
-        inner_matrix = [row[:] for row in matrix]
-        inner_free_members = free_members[:]
-        rows_count = len(inner_matrix)
-        columns_count = len(inner_matrix[0])
+        matrix, free_members = Solver.convert_system(matrix, free_members)
+        rows_count = len(matrix)
+        columns_count = len(matrix[0])
 
         for j in range(columns_count):
             for i in range(j, rows_count):
-                if abs(inner_matrix[i][j]) < epsilon:
+                if abs(matrix[i][j]) < epsilon:
                     continue
-                inner_matrix[i], inner_matrix[j] = inner_matrix[j], \
-                    inner_matrix[i]
-                inner_free_members[i], inner_free_members[j] = \
-                    inner_free_members[j], inner_free_members[i]
-                Solver._eliminate_column_(inner_matrix, inner_free_members, j)
+                matrix[i], matrix[j] = matrix[j], matrix[i]
+                free_members[i], free_members[j] = \
+                    free_members[j], free_members[i]
+                Solver._eliminate_column_(matrix, free_members, j)
                 break
 
-        if Solver._is_system_unsolvable_(inner_matrix, inner_free_members):
+        if Solver._is_system_unsolvable_(matrix, free_members):
             return None
 
-        return Solver._get_solution_(inner_matrix, inner_free_members)
+        return Solver._get_solution_(matrix, free_members)
 
     # проверяет, можно ли решить систему линейных уравнений.
     # Если система разрешима, то функция возвращает false,
